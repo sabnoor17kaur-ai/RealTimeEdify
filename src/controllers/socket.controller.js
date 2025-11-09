@@ -79,6 +79,12 @@ const handleConnection = async (socket, io, userId) => {
     try {
 
       const curr_doc = await getDocThroughSocket(data.docId);
+      
+      if (!curr_doc) {
+        io.to(data.docId).emit('load-document', '');
+        return;
+      }
+      
       let content = curr_doc.content;
 
       if (!content) {

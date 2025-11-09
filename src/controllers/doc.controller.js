@@ -59,6 +59,7 @@ export const getDocThroughSocket = async (id) => {
             return document;
         } catch (error) {
             console.log(error);
+            return null;
         }
 
 }

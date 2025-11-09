@@ -22,7 +22,13 @@ app.use(express.static(path.join(__dirname, 'client', 'dist')));
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/documents', documentRouter);
 
-app.get('/*', (req, res) => {
+// Catch-all handler: serve index.html for all non-API routes
+app.use((req, res, next) => {
+  // If it's an API route that wasn't handled, return 404
+  if (req.path.startsWith('/api/')) {
+    return res.status(404).json({ message: 'API endpoint not found' });
+  }
+  // For all other routes, serve the React app
   res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
 });
 
