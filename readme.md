@@ -79,3 +79,5 @@ Access the application in your browser at http://localhost:5173.
 Create an account and start collaborating on documents!
 
 working of our project:
+🎥 [Watch Project Demo](https://github.com/sabnoor17kaur-ai/RealTimeEdify/raw/main/assets/Recording%202025-11-10%20193723.mp4)
+
