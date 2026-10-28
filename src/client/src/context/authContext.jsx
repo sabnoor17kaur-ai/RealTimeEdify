@@ -1,9 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getLocalStorageWithExpiry } from "../helpers/auth/auth.helper.js";
-
+import { API } from "../helpers/config.js";
 
 const AuthContext = createContext();
-
 
 const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
@@ -11,23 +10,17 @@ const AuthProvider = ({ children }) => {
     token: ""
   });
 
-
-
-
   useEffect(() => {
     const data = getLocalStorageWithExpiry("auth");
     const fetchUser = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_APP_BACKEND_URL || '/api/v1'}/users/me`, {
-          method: 'GET',
+        const res = await fetch(`${API}/users/me`, {
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${data?.token}`
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${data.token}`
           }
-
-
         });
-
 
         const result = await res.json();
         if (res.status === 200) {
@@ -39,4 +32,20 @@ const AuthProvider = ({ children }) => {
       } catch (err) {
         console.log(err);
       }
+    };
+
+    if (data) {
+      fetchUser();
     }
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ auth, setAuth }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+const useAuth = () => useContext(AuthContext);
+
+export { useAuth, AuthProvider };
